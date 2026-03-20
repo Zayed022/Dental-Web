@@ -17,7 +17,7 @@ export default function AdminAppointments() {
 
   const fetchAppointments = async () => {
     let q = supabase.from('appointments').select('*, patients(name, phone), doctors(name), services(name, price)').order('appointment_date', { ascending: false });
-    if (statusFilter !== 'all') q = q.eq('status', statusFilter);
+    if (statusFilter !== 'all') q = q.eq('status', statusFilter as any);
     const { data } = await q;
     setAppointments(data || []);
   };
