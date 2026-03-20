@@ -25,7 +25,7 @@ export default function AdminAppointments() {
   useEffect(() => { fetchAppointments(); }, [statusFilter]);
 
   const updateStatus = async (id: string, status: string) => {
-    await supabase.from('appointments').update({ status }).eq('id', id);
+    await supabase.from('appointments').update({ status: status as any }).eq('id', id);
     toast({ title: `Appointment ${status}` });
     fetchAppointments();
   };
