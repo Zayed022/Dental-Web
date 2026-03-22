@@ -118,7 +118,7 @@ export default function BookAppointmentPage() {
       // Send WhatsApp confirmation (fire-and-forget)
       const doctor = doctors.find(d => d.id === selectedDoctor);
       sendBookingConfirmation({
-        id: '', // We don't have the appointment ID from insert without select
+        id: aptData?.id || '',
         patient_id: patientId,
         patientName,
         patientPhone,
