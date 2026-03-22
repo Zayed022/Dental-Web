@@ -100,7 +100,7 @@ export default function BookAppointmentPage() {
     const endMinutes = parseInt(selectedTime.split(':')[0]) * 60 + parseInt(selectedTime.split(':')[1]) + duration;
     const endTime = `${String(Math.floor(endMinutes / 60)).padStart(2, '0')}:${String(endMinutes % 60).padStart(2, '0')}`;
 
-    const { error } = await supabase.from('appointments').insert({
+    const { data: aptData, error } = await supabase.from('appointments').insert({
       patient_id: patientId,
       doctor_id: selectedDoctor,
       service_id: selectedService,
@@ -108,7 +108,7 @@ export default function BookAppointmentPage() {
       start_time: selectedTime,
       end_time: endTime,
       notes: notes || null,
-    });
+    }).select('id').single();
 
     setLoading(false);
     if (error) {
