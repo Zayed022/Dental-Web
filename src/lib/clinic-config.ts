@@ -5,7 +5,7 @@ export const CLINIC_CONFIG = {
   phone: '+91 98765 43210',
   email: 'info@smilecare.in',
   address: '302, Crystal Plaza, Andheri West, Mumbai 400053',
-  whatsappNumber: '+919876543210',
+  whatsappNumber: '+917498881947',
   googleReviewLink: 'https://g.page/smilecare-mumbai/review',
   openingTime: '09:00 AM',
   closingTime: '08:00 PM',
