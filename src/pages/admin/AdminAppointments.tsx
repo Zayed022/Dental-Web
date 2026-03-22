@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { format } from 'date-fns';
-import { Search, Filter, CheckCircle2, XCircle, Star } from 'lucide-react';
+import { Search, Filter, CheckCircle2, XCircle, Star, MessageCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { CLINIC_CONFIG } from '@/lib/clinic-config';
+import { sendReviewRequest, getWhatsAppChatLink } from '@/lib/whatsapp';
 
 export default function AdminAppointments() {
   const [appointments, setAppointments] = useState<any[]>([]);
