@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Calendar, CheckCircle2, Clock, User } from 'lucide-react';
 import { format, addDays, isSameDay } from 'date-fns';
+import { sendBookingConfirmation } from '@/lib/whatsapp';
 
 type Step = 'service' | 'doctor' | 'datetime' | 'details' | 'confirm';
 
