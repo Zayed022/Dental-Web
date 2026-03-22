@@ -137,6 +137,13 @@ export default function AdminAppointments() {
                       {a.status === 'completed' && !a.review_request_sent && (
                         <Button size="sm" variant="ghost" onClick={() => triggerReviewRequest(a)} className="text-warning h-7 text-xs"><Star className="w-3 h-3 mr-1" />Request Review</Button>
                       )}
+                      {a.patients?.phone && (
+                        <Button size="sm" variant="ghost" asChild className="text-accent h-7 text-xs">
+                          <a href={getWhatsAppChatLink(a.patients.phone, `Hi ${a.patients.name}, this is SmileCare Dental Clinic.`)} target="_blank" rel="noopener noreferrer">
+                            <MessageCircle className="w-3 h-3 mr-1" />Chat
+                          </a>
+                        </Button>
+                      )}
                     </div>
                   </td>
                 </tr>
