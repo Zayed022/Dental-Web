@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { format } from 'date-fns';
-import { Search, Filter, CheckCircle2, XCircle, Star } from 'lucide-react';
+import { Search, Filter, CheckCircle2, XCircle, Star, MessageCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { CLINIC_CONFIG } from '@/lib/clinic-config';
+import { sendReviewRequest, getWhatsAppChatLink } from '@/lib/whatsapp';
 
 export default function AdminAppointments() {
   const [appointments, setAppointments] = useState<any[]>([]);
@@ -31,17 +32,26 @@ export default function AdminAppointments() {
   };
 
   const triggerReviewRequest = async (apt: any) => {
-    await supabase.from('notification_log').insert({
-      appointment_id: apt.id,
-      patient_id: apt.patient_id,
-      type: 'whatsapp',
-      purpose: 'review_request',
-      message: `Hi ${apt.patients?.name}! Thank you for visiting SmileCare. We'd love your feedback! Please leave us a review: ${CLINIC_CONFIG.googleReviewLink}`,
-      status: 'pending',
-    });
-    await supabase.from('appointments').update({ review_request_sent: true }).eq('id', apt.id);
-    toast({ title: 'Review request sent!' });
-    fetchAppointments();
+    try {
+      await sendReviewRequest({
+        appointmentId: apt.id,
+        patientId: apt.patient_id,
+        patientName: apt.patients?.name || '',
+        patientPhone: apt.patients?.phone || '',
+        googleReviewLink: CLINIC_CONFIG.googleReviewLink,
+      });
+      await supabase.from('appointments').update({ review_request_sent: true }).eq('id', apt.id);
+      toast({ title: 'Review request sent via WhatsApp!' });
+      fetchAppointments();
+    } catch {
+      // Fallback: open wa.me link
+      const link = getWhatsAppChatLink(
+        apt.patients?.phone || '',
+        `Hi ${apt.patients?.name}! Thank you for visiting SmileCare. We'd love your feedback! Please leave us a review: ${CLINIC_CONFIG.googleReviewLink}`
+      );
+      window.open(link, '_blank');
+      toast({ title: 'Opened WhatsApp chat (fallback)' });
+    }
   };
 
   const filtered = appointments.filter(a =>
@@ -126,6 +136,13 @@ export default function AdminAppointments() {
                       )}
                       {a.status === 'completed' && !a.review_request_sent && (
                         <Button size="sm" variant="ghost" onClick={() => triggerReviewRequest(a)} className="text-warning h-7 text-xs"><Star className="w-3 h-3 mr-1" />Request Review</Button>
+                      )}
+                      {a.patients?.phone && (
+                        <Button size="sm" variant="ghost" asChild className="text-accent h-7 text-xs">
+                          <a href={getWhatsAppChatLink(a.patients.phone, `Hi ${a.patients.name}, this is SmileCare Dental Clinic.`)} target="_blank" rel="noopener noreferrer">
+                            <MessageCircle className="w-3 h-3 mr-1" />Chat
+                          </a>
+                        </Button>
                       )}
                     </div>
                   </td>

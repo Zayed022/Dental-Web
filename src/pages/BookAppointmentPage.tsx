@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Calendar, CheckCircle2, Clock, User } from 'lucide-react';
 import { format, addDays, isSameDay } from 'date-fns';
+import { sendBookingConfirmation } from '@/lib/whatsapp';
 
 type Step = 'service' | 'doctor' | 'datetime' | 'details' | 'confirm';
 
@@ -99,7 +100,7 @@ export default function BookAppointmentPage() {
     const endMinutes = parseInt(selectedTime.split(':')[0]) * 60 + parseInt(selectedTime.split(':')[1]) + duration;
     const endTime = `${String(Math.floor(endMinutes / 60)).padStart(2, '0')}:${String(endMinutes % 60).padStart(2, '0')}`;
 
-    const { error } = await supabase.from('appointments').insert({
+    const { data: aptData, error } = await supabase.from('appointments').insert({
       patient_id: patientId,
       doctor_id: selectedDoctor,
       service_id: selectedService,
@@ -107,13 +108,25 @@ export default function BookAppointmentPage() {
       start_time: selectedTime,
       end_time: endTime,
       notes: notes || null,
-    });
+    }).select('id').single();
 
     setLoading(false);
     if (error) {
       toast({ title: 'Error booking appointment', description: 'Please try again.', variant: 'destructive' });
     } else {
       setConfirmed(true);
+      // Send WhatsApp confirmation (fire-and-forget)
+      const doctor = doctors.find(d => d.id === selectedDoctor);
+      sendBookingConfirmation({
+        id: aptData?.id || '',
+        patient_id: patientId,
+        patientName,
+        patientPhone,
+        serviceName: service?.name || '',
+        doctorName: doctor?.name || '',
+        date: format(new Date(selectedDate), 'dd MMM yyyy'),
+        time: selectedTime,
+      }).catch(console.error);
     }
   };
 
