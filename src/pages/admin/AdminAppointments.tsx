@@ -32,17 +32,26 @@ export default function AdminAppointments() {
   };
 
   const triggerReviewRequest = async (apt: any) => {
-    await supabase.from('notification_log').insert({
-      appointment_id: apt.id,
-      patient_id: apt.patient_id,
-      type: 'whatsapp',
-      purpose: 'review_request',
-      message: `Hi ${apt.patients?.name}! Thank you for visiting SmileCare. We'd love your feedback! Please leave us a review: ${CLINIC_CONFIG.googleReviewLink}`,
-      status: 'pending',
-    });
-    await supabase.from('appointments').update({ review_request_sent: true }).eq('id', apt.id);
-    toast({ title: 'Review request sent!' });
-    fetchAppointments();
+    try {
+      await sendReviewRequest({
+        appointmentId: apt.id,
+        patientId: apt.patient_id,
+        patientName: apt.patients?.name || '',
+        patientPhone: apt.patients?.phone || '',
+        googleReviewLink: CLINIC_CONFIG.googleReviewLink,
+      });
+      await supabase.from('appointments').update({ review_request_sent: true }).eq('id', apt.id);
+      toast({ title: 'Review request sent via WhatsApp!' });
+      fetchAppointments();
+    } catch {
+      // Fallback: open wa.me link
+      const link = getWhatsAppChatLink(
+        apt.patients?.phone || '',
+        `Hi ${apt.patients?.name}! Thank you for visiting SmileCare. We'd love your feedback! Please leave us a review: ${CLINIC_CONFIG.googleReviewLink}`
+      );
+      window.open(link, '_blank');
+      toast({ title: 'Opened WhatsApp chat (fallback)' });
+    }
   };
 
   const filtered = appointments.filter(a =>
