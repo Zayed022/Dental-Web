@@ -115,6 +115,18 @@ export default function BookAppointmentPage() {
       toast({ title: 'Error booking appointment', description: 'Please try again.', variant: 'destructive' });
     } else {
       setConfirmed(true);
+      // Send WhatsApp confirmation (fire-and-forget)
+      const doctor = doctors.find(d => d.id === selectedDoctor);
+      sendBookingConfirmation({
+        id: '', // We don't have the appointment ID from insert without select
+        patient_id: patientId,
+        patientName,
+        patientPhone,
+        serviceName: service?.name || '',
+        doctorName: doctor?.name || '',
+        date: format(new Date(selectedDate), 'dd MMM yyyy'),
+        time: selectedTime,
+      }).catch(console.error);
     }
   };
 
