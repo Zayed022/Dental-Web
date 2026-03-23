@@ -72,15 +72,21 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {services.map((s, i) => (
               <ScrollReveal key={s.id} delay={i * 80}>
-                <div className="group bg-card rounded-xl border border-border/60 p-6 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-0.5">
-                  <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center mb-4">
-                    <Heart className="w-5 h-5 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-1.5">{s.name}</h3>
-                  <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{s.description}</p>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="font-semibold text-primary">₹{Number(s.price).toLocaleString('en-IN')}</span>
-                    <span className="text-muted-foreground">{s.duration_minutes} min</span>
+                <div className="group bg-card rounded-xl border border-border/60 overflow-hidden hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-0.5">
+                  {s.image_url ? (
+                    <img src={s.image_url} alt={s.name} className="w-full h-36 object-cover" />
+                  ) : (
+                    <div className="w-full h-36 bg-gradient-to-br from-secondary to-primary/10 flex items-center justify-center">
+                      <Heart className="w-8 h-8 text-primary/40" />
+                    </div>
+                  )}
+                  <div className="p-5">
+                    <h3 className="font-semibold text-foreground mb-1.5">{s.name}</h3>
+                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{s.description}</p>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-semibold text-primary">₹{Number(s.price).toLocaleString('en-IN')}</span>
+                      <span className="text-muted-foreground">{s.duration_minutes} min</span>
+                    </div>
                   </div>
                 </div>
               </ScrollReveal>
