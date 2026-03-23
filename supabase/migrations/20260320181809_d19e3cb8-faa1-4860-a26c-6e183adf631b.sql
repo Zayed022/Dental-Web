@@ -4,7 +4,7 @@ CREATE TABLE public.clinic_settings (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   clinic_name TEXT NOT NULL DEFAULT 'SmileCare Dental Clinic',
   tagline TEXT DEFAULT 'Your Smile, Our Priority',
-  phone TEXT DEFAULT '+91 98765 43210',
+  phone TEXT DEFAULT '+91 7498881947',
   email TEXT DEFAULT 'info@smilecare.in',
   address TEXT DEFAULT '302, Crystal Plaza, Andheri West, Mumbai 400053',
   logo_url TEXT,
@@ -134,7 +134,16 @@ ALTER TABLE public.treatment_records ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Authenticated can read treatment records" ON public.treatment_records FOR SELECT TO authenticated USING (true);
 CREATE POLICY "Authenticated can manage treatment records" ON public.treatment_records FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
+DROP POLICY "Public can create patients via booking" ON public.patients;
+
+CREATE POLICY "Public can create patients via booking"
+ON public.patients
+FOR INSERT
+TO anon
+WITH CHECK (true);
 -- Patient files (prescriptions, x-rays, etc.)
+
+
 CREATE TABLE public.patient_files (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   patient_id UUID NOT NULL REFERENCES public.patients(id) ON DELETE CASCADE,

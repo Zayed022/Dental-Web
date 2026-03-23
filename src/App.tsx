@@ -18,6 +18,8 @@ import AdminServices from "./pages/admin/AdminServices";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminSettings from "./pages/admin/AdminSettings";
 import NotFound from "./pages/NotFound";
+import GalleryPage from "./pages/GalleryPage";
+import DentalTourism from "./pages/DentalTourismPage";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +36,8 @@ const App = () => (
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/book" element={<BookAppointmentPage />} />
+          <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/dental-tourism" element={<DentalTourism />} />
 
           {/* Auth */}
           <Route path="/auth" element={<AuthPage />} />

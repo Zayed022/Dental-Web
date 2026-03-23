@@ -8,6 +8,8 @@ const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/services', label: 'Services' },
   { to: '/about', label: 'About' },
+  { to: '/gallery', label: 'Gallery' },
+  { to: '/dental-tourism', label: 'Dental Tourism' },
   { to: '/contact', label: 'Contact' },
 ];
 

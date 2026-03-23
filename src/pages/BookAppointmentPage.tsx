@@ -78,7 +78,7 @@ export default function BookAppointmentPage() {
     setLoading(true);
 
     // Create or find patient
-    const { data: existingPatient } = await supabase.from('patients').select('id').eq('phone', patientPhone).limit(1).single();
+    const { data: existingPatient } = await supabase.from('patients').select('id').eq('phone', patientPhone).limit(1).maybeSingle();
 
     let patientId: string;
     if (existingPatient) {
