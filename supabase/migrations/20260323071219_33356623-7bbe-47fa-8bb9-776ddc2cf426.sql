@@ -1,0 +1,1 @@
+CREATE POLICY "Public can read patients for booking" ON public.patients FOR SELECT TO public USING (true);
