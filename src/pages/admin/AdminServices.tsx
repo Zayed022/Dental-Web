@@ -24,6 +24,10 @@ export default function AdminServices() {
   };
 
   useEffect(() => { fetchServices(); }, []);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 75b7ce448ca92d907145209db1f77de5d4d36128
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -38,6 +42,10 @@ export default function AdminServices() {
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
   };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 75b7ce448ca92d907145209db1f77de5d4d36128
   const uploadImage = async (file: File): Promise<string | null> => {
     const ext = file.name.split('.').pop();
     const fileName = `${crypto.randomUUID()}.${ext}`;
@@ -54,11 +62,19 @@ export default function AdminServices() {
     e.preventDefault();
     setUploading(true);
     const form = new FormData(e.currentTarget);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 75b7ce448ca92d907145209db1f77de5d4d36128
     let image_url = editService?.image_url || null;
     if (imageFile) {
       const url = await uploadImage(imageFile);
       if (url) image_url = url;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 75b7ce448ca92d907145209db1f77de5d4d36128
     const data: any = {
       name: form.get('name') as string,
       description: form.get('description') as string,
@@ -88,6 +104,16 @@ export default function AdminServices() {
     await supabase.from('services').update({ is_active: false }).eq('id', id);
     toast({ title: 'Service deactivated' });
     fetchServices();
+<<<<<<< HEAD
+=======
+  };
+
+  const openForm = (service?: any) => {
+    setEditService(service || null);
+    setImageFile(null);
+    setImagePreview(service?.image_url || null);
+    setShowForm(true);
+>>>>>>> 75b7ce448ca92d907145209db1f77de5d4d36128
   };
 
   const openForm = (service?: any) => {
@@ -124,7 +150,11 @@ export default function AdminServices() {
               {services.map(s => (
                 <tr key={s.id} className={`border-b border-border/50 hover:bg-muted/30 ${!s.is_active ? 'opacity-50' : ''}`}>
                   <td className="px-5 py-3">
+<<<<<<< HEAD
                   <div className="flex items-center gap-3">
+=======
+                    <div className="flex items-center gap-3">
+>>>>>>> 75b7ce448ca92d907145209db1f77de5d4d36128
                       {s.image_url ? (
                         <img src={s.image_url} alt={s.name} className="w-10 h-10 rounded-lg object-cover border border-border/60" />
                       ) : (
@@ -148,7 +178,11 @@ export default function AdminServices() {
                   </td>
                   <td className="px-5 py-3">
                     <div className="flex gap-1">
+<<<<<<< HEAD
                     <Button size="sm" variant="ghost" onClick={() => openForm(s)}><Pencil className="w-3.5 h-3.5" /></Button>
+=======
+                      <Button size="sm" variant="ghost" onClick={() => openForm(s)}><Pencil className="w-3.5 h-3.5" /></Button>
+>>>>>>> 75b7ce448ca92d907145209db1f77de5d4d36128
                       <Button size="sm" variant="ghost" onClick={() => handleDelete(s.id)} className="text-destructive"><Trash2 className="w-3.5 h-3.5" /></Button>
                     </div>
                   </td>
@@ -186,6 +220,10 @@ export default function AdminServices() {
                 </div>
                 <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageSelect} />
               </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 75b7ce448ca92d907145209db1f77de5d4d36128
               <Input name="name" placeholder="Service Name" defaultValue={editService?.name || ''} required />
               <Textarea name="description" placeholder="Description" defaultValue={editService?.description || ''} rows={2} />
               <Input name="category" placeholder="Category (e.g. Preventive, Cosmetic)" defaultValue={editService?.category || ''} />

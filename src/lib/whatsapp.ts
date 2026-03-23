@@ -28,26 +28,51 @@ export async function sendBookingConfirmation(appointment: {
   patientPhone: string;
   serviceName: string;
   doctorName: string;
+  doctorPhone?: string;
   date: string;
   time: string;
 }) {
-  const message = `✅ Appointment Confirmed!\n\nHi ${appointment.patientName}, your appointment has been booked:\n\n📋 Service: ${appointment.serviceName}\n👨‍⚕️ Doctor: Dr. ${appointment.doctorName}\n📅 Date: ${appointment.date}\n🕐 Time: ${appointment.time}\n\nPlease arrive 10 minutes early. Reply CANCEL to cancel.\n\n- SmileCare Dental Clinic`;
+  const patientMessage = `✅ Appointment Confirmed!\n\nHi ${appointment.patientName}, your appointment has been booked:\n\n📋 Service: ${appointment.serviceName}\n👨‍⚕️ Doctor: Dr. ${appointment.doctorName}\n📅 Date: ${appointment.date}\n🕐 Time: ${appointment.time}\n\nPlease arrive 10 minutes early. Reply CANCEL to cancel.\n\n- SmileCare Dental Clinic`;
 
-  // Log notification
-  const { data: notif } = await supabase.from('notification_log').insert({
+  const doctorMessage = `📋 New Appointment Booked\n\nHi Dr. ${appointment.doctorName}, a new appointment has been scheduled:\n\n👤 Patient: ${appointment.patientName}\n📋 Service: ${appointment.serviceName}\n📅 Date: ${appointment.date}\n🕐 Time: ${appointment.time}\n\n- SmileCare Dental Clinic`;
+
+  // Log & send patient notification
+  const { data: patientNotif } = await supabase.from('notification_log').insert({
     appointment_id: appointment.id,
     patient_id: appointment.patient_id,
     type: 'whatsapp',
     purpose: 'confirmation',
-    message,
+    message: patientMessage,
     status: 'pending',
   }).select('id').single();
 
-  return sendWhatsAppMessage({
+  const patientResult = sendWhatsAppMessage({
     to: appointment.patientPhone,
-    message,
-    notification_id: notif?.id,
+    message: patientMessage,
+    notification_id: patientNotif?.id,
   });
+
+  // Send doctor notification if phone available
+  let doctorResult: Promise<any> | undefined;
+  if (appointment.doctorPhone) {
+    const { data: doctorNotif } = await supabase.from('notification_log').insert({
+      appointment_id: appointment.id,
+      patient_id: appointment.patient_id,
+      type: 'whatsapp',
+      purpose: 'doctor_notification',
+      message: doctorMessage,
+      status: 'pending',
+    }).select('id').single();
+
+    doctorResult = sendWhatsAppMessage({
+      to: appointment.doctorPhone,
+      message: doctorMessage,
+      notification_id: doctorNotif?.id,
+    });
+  }
+
+  const results = await Promise.all([patientResult, ...(doctorResult ? [doctorResult] : [])]);
+  return results[0];
 }
 
 /**

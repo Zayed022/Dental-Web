@@ -1,0 +1,2 @@
+ALTER TABLE public.notification_log DROP CONSTRAINT notification_log_purpose_check;
+ALTER TABLE public.notification_log ADD CONSTRAINT notification_log_purpose_check CHECK (purpose = ANY (ARRAY['confirmation'::text, 'reminder'::text, 'follow_up'::text, 'review_request'::text, 'doctor_notification'::text]));
