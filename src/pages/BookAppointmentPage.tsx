@@ -78,29 +78,33 @@ export default function BookAppointmentPage() {
     setLoading(true);
 
     // Create or find patient
-    const { data: existingPatient } = await supabase.from('patients').select('id').eq('phone', patientPhone).limit(1).single();
+    const { data: existingPatient } = await supabase.from('patients').select('id').eq('phone', patientPhone).limit(1).maybeSingle();
 
     let patientId: string;
     if (existingPatient) {
       patientId = existingPatient.id;
     } else {
-      const { data: newPatient, error } = await supabase.from('patients').insert({
+      // Generate ID client-side since anon role can't use returning
+      patientId = crypto.randomUUID();
+      const { error: patientError } = await supabase.from('patients').insert({
+        id: patientId,
         name: patientName,
         phone: patientPhone,
         email: patientEmail || null,
-      }).select('id').single();
-      if (error || !newPatient) {
+      });
+      if (patientError) {
         toast({ title: 'Error creating patient record', variant: 'destructive' });
         setLoading(false);
         return;
       }
-      patientId = newPatient.id;
     }
 
     const endMinutes = parseInt(selectedTime.split(':')[0]) * 60 + parseInt(selectedTime.split(':')[1]) + duration;
     const endTime = `${String(Math.floor(endMinutes / 60)).padStart(2, '0')}:${String(endMinutes % 60).padStart(2, '0')}`;
 
-    const { data: aptData, error } = await supabase.from('appointments').insert({
+    const appointmentId = crypto.randomUUID();
+    const { error } = await supabase.from('appointments').insert({
+      id: appointmentId,
       patient_id: patientId,
       doctor_id: selectedDoctor,
       service_id: selectedService,
@@ -108,7 +112,7 @@ export default function BookAppointmentPage() {
       start_time: selectedTime,
       end_time: endTime,
       notes: notes || null,
-    }).select('id').single();
+    });
 
     setLoading(false);
     if (error) {
@@ -118,7 +122,7 @@ export default function BookAppointmentPage() {
       // Send WhatsApp confirmation (fire-and-forget)
       const doctor = doctors.find(d => d.id === selectedDoctor);
       sendBookingConfirmation({
-        id: aptData?.id || '',
+        id: appointmentId,
         patient_id: patientId,
         patientName,
         patientPhone,
