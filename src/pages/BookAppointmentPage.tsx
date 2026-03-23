@@ -124,6 +124,7 @@ export default function BookAppointmentPage() {
         patientPhone,
         serviceName: service?.name || '',
         doctorName: doctor?.name || '',
+        doctorPhone: doctor?.phone || undefined,
         date: format(new Date(selectedDate), 'dd MMM yyyy'),
         time: selectedTime,
       }).catch(console.error);
