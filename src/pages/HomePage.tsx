@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import ContactPage from './ContactPage';
 import ServicesHero from '@/components/ServicesHero';
 import VideoTestimonials from '@/components/VideoTestimonials';
+import Banner5 from "../../src/assets/Banner5.jpg"
 
 const testimonials = [
   {
@@ -100,7 +101,7 @@ export default function HomePage() {
     <ScrollReveal delay={200}>
       <div className="relative">
         <img
-          src="https://lh3.googleusercontent.com/gps-cs-s/AHVAwepzlt7beE-glH6IjI60jL6ylzF8S0YNbxR00gK_tX_HyFIPHRqKbTKZGqZ4WvnBaeyl3sBgtklDw7F9dusaIGOYzErywoPHd67F3_wNzdFOlCh2eG37st-qN2ODoQZ6x6bqlCgloA=w260-h175-n-k-no"
+          src={Banner5}
           alt="Dental Clinic"
           className="rounded-2xl shadow-xl w-full object-cover"
         />

@@ -2,6 +2,7 @@ import { PublicLayout } from '@/components/PublicLayout';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { CLINIC_CONFIG } from '@/lib/clinic-config';
 import { Shield, Award, Heart, Users, CheckCircle } from 'lucide-react';
+import BannerImage from "../../src/assets/banner.jpg"
 
 const storyContent = {
   heading: "Our Story",
@@ -65,8 +66,7 @@ export default function AboutPage() {
           {/* Image */}
           <div className="w-full">
             <img
-              src={storyContent.image}
-              alt="Dental consultation"
+              src={BannerImage}
               className="rounded-2xl shadow-md w-full object-cover"
             />
           </div>

@@ -33,23 +33,38 @@ export default function AdminAppointments() {
 
   const triggerReviewRequest = async (apt: any) => {
     try {
-      await sendReviewRequest({
+      const { data, error } = await sendReviewRequest({
         appointmentId: apt.id,
         patientId: apt.patient_id,
         patientName: apt.patients?.name || '',
         patientPhone: apt.patients?.phone || '',
         googleReviewLink: CLINIC_CONFIG.googleReviewLink,
       });
-      await supabase.from('appointments').update({ review_request_sent: true }).eq('id', apt.id);
+  
+      // 🚨 IMPORTANT: manually check error
+      if (error || !data?.success) {
+        throw new Error(error?.message || 'WhatsApp failed');
+      }
+  
+      await supabase
+        .from('appointments')
+        .update({ review_request_sent: true })
+        .eq('id', apt.id);
+  
       toast({ title: 'Review request sent via WhatsApp!' });
       fetchAppointments();
-    } catch {
-      // Fallback: open wa.me link
+  
+    } catch (err) {
+      console.error("WhatsApp failed, using fallback:", err);
+  
+      // ✅ Fallback works now
       const link = getWhatsAppChatLink(
         apt.patients?.phone || '',
         `Hi ${apt.patients?.name}! Thank you for visiting SmileCare. We'd love your feedback! Please leave us a review: ${CLINIC_CONFIG.googleReviewLink}`
       );
+  
       window.open(link, '_blank');
+  
       toast({ title: 'Opened WhatsApp chat (fallback)' });
     }
   };

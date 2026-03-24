@@ -1,3 +1,4 @@
+import Banner3 from "../../src/assets/Banner3.jpg"
 export default function TestimonialHighlight() {
     const testimonial = {
       quote:
@@ -6,8 +7,7 @@ export default function TestimonialHighlight() {
       country: "United States",
       treatment: "Full Mouth Rehabilitation",
       initials: "MJ",
-      image:
-        "https://images.unsplash.com/photo-1588776814546-ec7e0b7a1c02?q=80&w=1200&auto=format&fit=crop",
+      
     };
   
     return (
@@ -18,7 +18,7 @@ export default function TestimonialHighlight() {
             {/* LEFT IMAGE */}
             <div>
               <img
-                src={testimonial.image}
+                src={Banner3}
                 alt="Dental Clinic"
                 className="rounded-2xl shadow-md w-full object-cover"
               />

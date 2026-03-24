@@ -3,6 +3,7 @@ import WhyChooseUs from "./WhyChooseUs";
 import TestimonialHighlight from "./TestimonialsHighlight";
 import GlobalJourney from "./GlobalJourney";
 import FAQSection from "./FAQSection";
+import Banner2 from "../../src/assets/Banner2.webp"
 
 export default function DentalTourismHero() {
   return (
@@ -41,9 +42,9 @@ export default function DentalTourismHero() {
         {/* RIGHT IMAGE */}
         <div className="relative">
           <img
-            src="https://images.unsplash.com/photo-1588776814546-ec7e0b7a1c02?q=80&w=1200&auto=format&fit=crop"
+            src={Banner2}
             alt="Dental Clinic"
-            className="rounded-2xl shadow-lg w-full object-cover"
+            className="rounded-2xl shadow-lg w-80 object-cover"
           />
 
           {/* Floating Card */}

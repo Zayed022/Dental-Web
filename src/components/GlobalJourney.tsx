@@ -1,4 +1,5 @@
 import { User, Heart, Plane, Award, Globe } from "lucide-react";
+import Banner4 from "../../src/assets/Banner4.jpg"
 
 export default function GlobalJourney() {
   const steps = [
@@ -72,12 +73,7 @@ export default function GlobalJourney() {
           {/* RIGHT SIDE */}
           <div className="relative">
 
-            {/* Image */}
-            <img
-              src="https://images.unsplash.com/photo-1588776814546-ec7e0b7a1c02?q=80&w=1200&auto=format&fit=crop"
-              alt="Dental Setup"
-              className="rounded-2xl shadow-md w-full object-cover"
-            />
+            
 
             {/* Floating CTA Card */}
             <div className="absolute bottom-6 left-6 right-6 bg-white rounded-2xl shadow-lg p-6 text-center">
