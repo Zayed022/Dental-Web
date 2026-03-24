@@ -136,11 +136,7 @@ export default function HomePage() {
               <ScrollReveal key={s.id} delay={i * 80}>
                 <div className="group bg-card rounded-xl border border-border/60 overflow-hidden hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-0.5">
                   {s.image_url ? (
-<<<<<<< HEAD
                     <img src={s.image_url} alt={s.name} className="w-full h-100 object-cover" />
-=======
-                    <img src={s.image_url} alt={s.name} className="w-full h-36 object-cover" />
->>>>>>> 75b7ce448ca92d907145209db1f77de5d4d36128
                   ) : (
                     <div className="w-full h-36 bg-gradient-to-br from-secondary to-primary/10 flex items-center justify-center">
                       <Heart className="w-8 h-8 text-primary/40" />
@@ -153,13 +149,8 @@ export default function HomePage() {
                       <span className="font-semibold text-primary">₹{Number(s.price).toLocaleString('en-IN')}</span>
                       <span className="text-muted-foreground">{s.duration_minutes} min</span>
                     </div>
-<<<<<<< HEAD
                     </div>
                     </div>
-=======
-                  </div>
-                </div>
->>>>>>> 75b7ce448ca92d907145209db1f77de5d4d36128
               </ScrollReveal>
             ))}
           </div>
